@@ -1,0 +1,39 @@
+version: '3' 
+volumes:
+  local_postgres_data: {}
+  local_filestore_data: {}
+  pgadmin: {} 
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+        - db
+    ports:
+      - "8090:8069"
+      - "8096:8071"
+      - "8097:8072"
+    volumes:
+      - ./odoo_config:/etc/odoo
+      #- ../_template_content/addons/enterprise/:/mnt/extra-addons-enterprise
+      - ./medineo_web_content/addons/odoo_web_server/:/mnt/extra-addons-PROJECT_REPO
+      - ./medineo_web_content/filestore:/var/lib/odoo/filestore
+      - ./medineo_web_content/backup:/home/admin/backup
+    restart: always
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    command: --dev=all
+  db:
+    image: postgres:12
+    ports:
+      - "8098:5432"
+    environment:
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - POSTGRES_DB=postgres
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    restart: always
