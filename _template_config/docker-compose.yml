@@ -17,9 +17,9 @@ services:
     volumes:
       - ./odoo_config:/etc/odoo
       #- ../_template_content/addons/enterprise/:/mnt/extra-addons-enterprise
-      - ../_template_content/addons/PROJECT_REPO/:/mnt/extra-addons-PROJECT_REPO
-      - ../_template_content/filestore:/var/lib/odoo/filestore
-      - ../_template_content/backup:/home/admin/backup
+      - ./_template_content/addons/PROJECT_REPO/:/mnt/extra-addons-PROJECT_REPO
+      - ./_template_content/filestore:/var/lib/odoo/filestore
+      - ./_template_content/backup:/home/admin/backup
     restart: always
     environment:
       - HOST=db
